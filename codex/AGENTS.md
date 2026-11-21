@@ -24,6 +24,25 @@
 
 - 跟着仓库现有的流程规范走，不要私自引入仓库没有在用的工具和流程。
 
+## Writing artifacts
+
+An artifact is anything you produce for people other than the person you're working with: an app's interface and its text, user docs, prompts, skills, config. Its reader wasn't in your conversation, so write only what that reader needs.
+
+- Write every artifact for its own reader, not for the person who asked for it. Leave out:
+  - decisions and the reasons for them;
+  - conversation history, and options that were rejected or removed;
+  - implementation details the reader doesn't need;
+  - evidence that a requirement was met.
+
+  For example, no "data is preserved when you delete an item" note because that was a design goal, and no counter added only to show that a feature works.
+- When something is removed, remove every trace of it, including any instruction that forbids it. For example, after dropping an export format, no "don't use the old export format" line remains in a prompt or doc.
+- In prompts, skills and other instructions, write a rule only for behavior its reader would actually show. When a rule is too broad, narrow it instead of adding an exception: "ask before renaming user-visible commands", not "ask before renaming anything" plus "except internal names".
+- In an interface, every element and string must help the end user act. Don't repeat what's already shown, such as a "Healthy" label beside a green status dot, and make the interface clear enough to need no instructions or hints.
+- Use the end user's words, not the names you used while building.
+- When a design changes, delete whatever in the affected area no longer serves the end user, whoever wrote it.
+- Show new interface elements and new user-facing text (labels, help text, notices) as a prototype, and get approval before merging them. Error messages and log lines don't need this.
+- Before reporting interface work, list each visible element and string in the changed area, with one line on why the end user needs it.
+
 ## 沟通
 
 - 面向用户的叙述默认使用简体中文；代码、命令和技术标识保持英文。
