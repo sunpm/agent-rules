@@ -86,24 +86,21 @@ An artifact is anything you produce for people other than the person you're work
 
 ## 工具与并行
 
-- 搜索文件或文本优先使用 `rg`、`rg --files`；独立的读取和查询尽量批量执行。
-- 浏览器验收优先使用 Codex 内置浏览器。需要独立桌面浏览器时优先使用 Microsoft Edge。任务明确指定浏览器时，使用指定的浏览器。
-- 网页控制台优先使用可用的 CLI 或 API，飞书优先使用 `lark-cli`。需要通过界面操作时，按上述规则选择浏览器，并优先复用其中已登录的会话。
-- 除 Computer Use 界面操作按下节默认委派外，只有存在真正独立的工作流，且委派能节省时间或提升质量时才使用子 Agent。
-- 主 Agent 负责共享状态和连续决策；其他简单任务由当前 Agent 直接完成。委派任务必须有明确输入、输出和完成判据，最终结论由主 Agent 汇总并验证。
+- 搜索文件或文本优先使用 `rg`、`rg --files`。独立的读取和查询尽量批量执行。
+- 浏览器验收与 Web 页面操作默认由当前代理使用 `ego-browser` CLI 完成，包括打开页面、点击、输入、查看 DOM 快照和截图验收。使用前先读取 `~/.agents/skills/ego-browser/SKILL.md` 并运行 `ego-browser skill`。
+- 用户指定浏览器时使用指定的浏览器。`ego-browser` 不可用时，Codex 优先回退到其内置浏览器，需要独立桌面浏览器时优先使用 Microsoft Edge。
+- 网页控制台优先使用可用的 CLI 或 API，飞书优先使用 `lark-cli`。需要操作界面时优先复用已登录的会话。
+- 除下节所述的桌面操作外，只有存在独立的工作流，且委派能节省时间或提升质量时才使用子代理。主代理负责共享状态、连续决策和最终验收。委派时明确输入、输出和完成判据。
 
 ## Computer Use 默认委派
 
-- 主代理遇到需要 Computer Use（电脑或浏览器界面查看、点击、输入等交互操作）的任务时，默认委派给专门子代理；模型使用 `gpt-6.1-terra`（GPT-6.1 Terra），推理强度使用 `xhigh`。
-- 同一任务尽量复用同一个 Computer Use 子代理，避免多个代理同时争抢同一界面；主代理负责需求、必要上下文交接、协调与结果验收。
-- 当前 `collaboration.spawn_agent` 需要覆盖模型时，显式指定 `model="gpt-6.1-terra"`、`reasoning_effort="xhigh"`、`fork_turns="none"`，并在任务消息中提供足够的页面/应用状态、目标、边界和验收条件。
-- 此规则由主代理落实；已受委派的 Computer Use 子代理直接执行界面操作，不因本条再次层层转派。
-- 适用的专用工具、连接器或 API 仍按原规则优先使用；本偏好用于确需界面操作的部分。
-- 这是用户持续授权的默认委派方式，委派本身无需重复确认；操作权限和高风险审批仍按现有规则执行。用户本轮明确指定其他安排时，以本轮指令为准。
+- 有专用工具、连接器或 API 时优先使用。需要操作原生桌面应用或浏览器外部的系统弹窗时，支持 Computer Use 子代理的环境默认由主代理委派。该委派已获持续授权，操作权限和高风险审批沿用现有规则。
+- 同一任务尽量复用同一个 Computer Use 子代理，避免多个代理同时操作同一界面。主代理交代当前界面状态、目标、操作边界和验收条件，子代理直接执行，主代理核对结果。
+- 仅在 Codex 中，主代理调用 `collaboration.spawn_agent` 委派 Computer Use 时指定 `model="gpt-6.1-terra"`、`fork_turns="none"`，默认使用 `reasoning_effort="low"`。仅当复杂的跨应用操作在 `low` 下无法稳定定位时，改用 `reasoning_effort="medium"`。
 
 ## 规则来源
 
-- 全局规则维护在当前生效的 canonical `AGENTS.md`；`CLAUDE.md` 只作兼容入口，不复制规则正文。
+- 共享的全局规则维护在 `~/.codex/AGENTS.md`。`CLAUDE.md` 和 Antigravity 的 `GEMINI.md` 作为兼容入口引用共享规则。
 - 项目事实、生产状态、历史决策和对外契约以项目级 `AGENTS.md` 及其指定的脚本、探针、决策记录和合同文件为准。
 
 ## Git 提交规范
