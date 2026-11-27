@@ -88,7 +88,9 @@ An artifact is anything you produce for people other than the person you're work
 
 - 搜索文件或文本优先使用 `rg`、`rg --files`。独立的读取和查询尽量批量执行。
 - 浏览器验收与 Web 页面操作默认由当前代理使用 `ego-browser` CLI 完成，包括打开页面、点击、输入、查看 DOM 快照和截图验收。使用前先读取 `~/.agents/skills/ego-browser/SKILL.md` 并运行 `ego-browser skill`。
-- 用户指定浏览器时使用指定的浏览器。`ego-browser` 不可用时，Codex 优先回退到其内置浏览器，需要独立桌面浏览器时优先使用 Microsoft Edge。
+- 用户指定浏览器时，直接使用指定的浏览器。
+- 在 Codex 中，若默认沙箱拦截 `ego-browser` 启动或连接 `ego lite.app`，使用已授权的 `ego-browser` 命令前缀在沙箱外重试同一操作。
+- `ego-browser` 确认不可用时，Codex 优先使用内置浏览器。需要独立桌面浏览器时，优先使用 Microsoft Edge。
 - 网页控制台优先使用可用的 CLI 或 API，飞书优先使用 `lark-cli`。需要操作界面时优先复用已登录的会话。
 - 除下节所述的桌面操作外，只有存在独立的工作流，且委派能节省时间或提升质量时才使用子代理。主代理负责共享状态、连续决策和最终验收。委派时明确输入、输出和完成判据。
 
